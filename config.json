@@ -25,7 +25,7 @@
       {
         "id": 1,
         "name": "ZAG FARMS LOT OF FRUITS",
-        "description": "Dry Hash premium type Frozen aux notes puissantes, idéal pour les amateurs de qualité 🔥.",
+        "description": "Frozen Hash Premium aux notes puissantes, idéal pour les amateurs de qualité 🔥.",
         "price": 10,
         "emoji": "🍫",
         "image": "https://i.ibb.co/vCcYJY1t/photo-5794289411116700067-y.jpg",
@@ -69,8 +69,8 @@
           "5": 80.00,
           "10": 160.00
         }
-        },
-        {
+      },
+      {
         "id": 4,
         "name": "MAGIC TERPS DOUBLE STATIC 🇺🇸",
         "description": "Double Static US du réel Static Made In US, un régale un bouche, les fumeurs de Static vous savez déjà ⭐.",
@@ -85,8 +85,8 @@
           "5": 210.00,
           "10": 400.00
         }
-        },
-        {
+      },
+      {
         "id": 5,
         "name": "CALIPLATES FROZEN SIFT 2K26",
         "description": "CALIPLATES FROZEN SIFT les vrais connaisseurs savent déjà tout, pas besoin d'en dire plus... 💥.",
@@ -101,8 +101,8 @@
           "5": 170.00,
           "10": 320.00
         }
-        },
-        {
+      },
+      {
         "id": 6,
         "name": "STATIC ROOM EDITION PINK STATIC 🇺🇸",
         "description": "STATIC ROOM STRAINS STICKY PUNCH une explosion de saveurs en bouche un réel bonbon... petit poumon soyez pas choqués 💪.",
@@ -117,8 +117,8 @@
           "5": 190.00,
           "10": 370.00
         }
-        },
-        {
+      },
+      {
         "id": 7,
         "name": "STATIC ROOM EDITION PURPLE STATIC 🇺🇸",
         "description": "STATIC ROOM STRAINS G-LANDZ une explosion de saveurs en bouche pas pour les petits poumons 💪.",
