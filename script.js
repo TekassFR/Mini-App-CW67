@@ -1256,7 +1256,7 @@
         els.detailMediaTrack.innerHTML = detailSlides
             .map((slide, idx) => {
                 if (slide.type === "video") {
-                    return `<article class="slide-item" data-slide-index="${idx}"><video class="slide-video" playsinline preload="metadata" src="${slide.src}"></video></article>`;
+                    return `<article class="slide-item" data-slide-index="${idx}"><video class="slide-video" playsinline preload="metadata" src="${slide.src}"></video><button class="video-fs-btn" type="button" aria-label="Plein écran">⛶</button></article>`;
                 }
                 return `<article class="slide-item" data-slide-index="${idx}"><img class="slide-image" src="${slide.src}" alt="Media produit ${idx + 1}" loading="lazy" referrerpolicy="no-referrer"></article>`;
             })
@@ -1284,6 +1284,16 @@
         els.detailThumbs.querySelectorAll(".detail-thumb").forEach((btn) => {
             btn.addEventListener("click", () => {
                 setDetailSlide(parseInt(btn.dataset.slideIndex, 10), true);
+            });
+        });
+
+        // Bouton plein écran sur chaque slide vidéo
+        els.detailMediaTrack.querySelectorAll(".video-fs-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const article = btn.closest(".slide-item");
+                const video = article ? article.querySelector("video") : null;
+                if (video) enterVideoFullscreen(video, btn);
             });
         });
 
@@ -1320,18 +1330,11 @@
                 els.detailMuteBtn.disabled = false;
                 els.detailMuteBtn.style.opacity = "1";
             }
-            if (els.detailFullscreenBtn) {
-                els.detailFullscreenBtn.style.display = "flex";
-                els.detailFullscreenBtn.textContent = "⛶";
-            }
         } else {
             if (els.detailMuteBtn) {
                 els.detailMuteBtn.disabled = true;
                 els.detailMuteBtn.style.opacity = "0.45";
                 els.detailMuteBtn.textContent = "🔈";
-            }
-            if (els.detailFullscreenBtn) {
-                els.detailFullscreenBtn.style.display = "none";
             }
         }
         if (els.detailMuteBtn) {
@@ -1347,8 +1350,7 @@
         els.detailMuteBtn.setAttribute("aria-label", video.muted ? t("muteLabel") : t("unmuteLabel"));
     }
 
-    function enterVideoFullscreen() {
-        const video = els.detailMediaTrack.querySelector(`.slide-item[data-slide-index="${detailSlideIndex}"] video`);
+    function enterVideoFullscreen(video, btn) {
         if (!video) return;
 
         const requestFS =
@@ -1361,20 +1363,24 @@
             requestFS.call(video).catch(() => { });
         }
 
-        // Mettre à jour l'icône lors du changement d'état fullscreen
+        // Mettre à jour l'icône selon l'état fullscreen
         const onFSChange = () => {
             const fsEl = document.fullscreenElement ||
                 document.webkitFullscreenElement ||
                 document.mozFullScreenElement ||
                 document.msFullscreenElement;
-            if (els.detailFullscreenBtn) {
-                els.detailFullscreenBtn.textContent = fsEl ? "✕" : "⛶";
+            if (btn) btn.textContent = fsEl ? "✕" : "⛶";
+            if (!fsEl) {
+                document.removeEventListener("fullscreenchange", onFSChange);
+                document.removeEventListener("webkitfullscreenchange", onFSChange);
+                document.removeEventListener("mozfullscreenchange", onFSChange);
+                document.removeEventListener("MSFullscreenChange", onFSChange);
             }
         };
-        document.addEventListener("fullscreenchange", onFSChange, { once: true });
-        document.addEventListener("webkitfullscreenchange", onFSChange, { once: true });
-        document.addEventListener("mozfullscreenchange", onFSChange, { once: true });
-        document.addEventListener("MSFullscreenChange", onFSChange, { once: true });
+        document.addEventListener("fullscreenchange", onFSChange);
+        document.addEventListener("webkitfullscreenchange", onFSChange);
+        document.addEventListener("mozfullscreenchange", onFSChange);
+        document.addEventListener("MSFullscreenChange", onFSChange);
     }
 
     function openProductDetail(product) {
@@ -1600,10 +1606,6 @@
 
         if (els.detailMuteBtn) {
             els.detailMuteBtn.addEventListener("click", toggleActiveVideoMute);
-        }
-
-        if (els.detailFullscreenBtn) {
-            els.detailFullscreenBtn.addEventListener("click", enterVideoFullscreen);
         }
 
         if (els.detailTeleBtn) {
