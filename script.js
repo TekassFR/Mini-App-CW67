@@ -1353,40 +1353,62 @@
     function enterVideoFullscreen(video, _btn) {
         if (!video) return;
 
+        // Sauvegarder les infos de la vidéo d'origine AVANT de la couper
+        var originalSrc = video.src;
+        var originalTime = video.currentTime || 0;
+        var originalMuted = video.muted;
+
+        // ✅ Fix double son : couper COMPLETEMENT la vidéo d'origine
+        // (pause seul ne suffit pas sur certains WebViews mobiles)
+        video.pause();
+        video.muted = true;
+        video.volume = 0;
+        video.src = "";
+        video.load();
+
+        // Créer l'overlay s'il n'existe pas encore
         var overlay = document.getElementById("vfs-overlay");
         if (!overlay) {
             overlay = document.createElement("div");
             overlay.id = "vfs-overlay";
             overlay.className = "vfs-overlay";
-            var closeHtml = "<button class=\"vfs-close\" id=\"vfs-close\" type=\"button\">\u2715</button>";
-            var playerHtml = "<video class=\"vfs-player\" id=\"vfs-player\" playsinline controls></video>";
-            overlay.innerHTML = closeHtml + playerHtml;
+            overlay.innerHTML =
+                "<button class=\"vfs-close\" id=\"vfs-close\" type=\"button\" aria-label=\"Fermer\">\u2715</button>" +
+                "<video class=\"vfs-player\" id=\"vfs-player\" playsinline controls></video>";
             document.body.appendChild(overlay);
         }
 
         var player = document.getElementById("vfs-player");
         var closeBtn = document.getElementById("vfs-close");
 
-        // ⚠️ Mettre en pause la vidéo d'origine pour éviter le doublement du son
-        video.pause();
-
-        player.src = video.src;
-        player.currentTime = video.currentTime || 0;
+        // Lancer le player fullscreen depuis la même position
+        player.src = originalSrc;
+        player.currentTime = originalTime;
         player.muted = false;
+        player.volume = 1;
         overlay.style.display = "flex";
         document.body.classList.add("vfs-open");
         player.play().catch(function () { });
 
         function closeOverlay() {
-            // Resynchroniser la vidéo principale et la reprendre
-            try { video.currentTime = player.currentTime; } catch (e) { }
+            var resumeTime = 0;
+            try { resumeTime = player.currentTime; } catch (e) { }
+
+            // Stopper le player overlay
             player.pause();
-            player.removeAttribute("src");
+            player.src = "";
             player.load();
+
+            // Restaurer et reprendre la vidéo d'origine
+            video.src = originalSrc;
+            video.muted = originalMuted;
+            video.volume = 1;
+            video.load();
+            video.currentTime = resumeTime;
+            video.play().catch(function () { });
+
             overlay.style.display = "none";
             document.body.classList.remove("vfs-open");
-            // Reprendre la vidéo principale en arrière-plan
-            video.play().catch(function () { });
             closeBtn.onclick = null;
             overlay.onclick = null;
         }
