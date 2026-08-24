@@ -1350,37 +1350,43 @@
         els.detailMuteBtn.setAttribute("aria-label", video.muted ? t("muteLabel") : t("unmuteLabel"));
     }
 
-    function enterVideoFullscreen(video, btn) {
+    function enterVideoFullscreen(video, _btn) {
         if (!video) return;
 
-        const requestFS =
-            video.requestFullscreen ||
-            video.webkitRequestFullscreen ||
-            video.mozRequestFullScreen ||
-            video.msRequestFullscreen;
-
-        if (requestFS) {
-            requestFS.call(video).catch(() => { });
+        var overlay = document.getElementById("vfs-overlay");
+        if (!overlay) {
+            overlay = document.createElement("div");
+            overlay.id = "vfs-overlay";
+            overlay.className = "vfs-overlay";
+            var closeHtml = "<button class=\"vfs-close\" id=\"vfs-close\" type=\"button\">\u2715</button>";
+            var playerHtml = "<video class=\"vfs-player\" id=\"vfs-player\" playsinline controls></video>";
+            overlay.innerHTML = closeHtml + playerHtml;
+            document.body.appendChild(overlay);
         }
 
-        // Mettre à jour l'icône selon l'état fullscreen
-        const onFSChange = () => {
-            const fsEl = document.fullscreenElement ||
-                document.webkitFullscreenElement ||
-                document.mozFullScreenElement ||
-                document.msFullscreenElement;
-            if (btn) btn.textContent = fsEl ? "✕" : "⛶";
-            if (!fsEl) {
-                document.removeEventListener("fullscreenchange", onFSChange);
-                document.removeEventListener("webkitfullscreenchange", onFSChange);
-                document.removeEventListener("mozfullscreenchange", onFSChange);
-                document.removeEventListener("MSFullscreenChange", onFSChange);
-            }
-        };
-        document.addEventListener("fullscreenchange", onFSChange);
-        document.addEventListener("webkitfullscreenchange", onFSChange);
-        document.addEventListener("mozfullscreenchange", onFSChange);
-        document.addEventListener("MSFullscreenChange", onFSChange);
+        var player = document.getElementById("vfs-player");
+        var closeBtn = document.getElementById("vfs-close");
+
+        player.src = video.src;
+        player.currentTime = video.currentTime || 0;
+        player.muted = false;
+        overlay.style.display = "flex";
+        document.body.classList.add("vfs-open");
+        player.play().catch(function () { });
+
+        function closeOverlay() {
+            try { video.currentTime = player.currentTime; } catch (e) { }
+            player.pause();
+            player.removeAttribute("src");
+            player.load();
+            overlay.style.display = "none";
+            document.body.classList.remove("vfs-open");
+            closeBtn.onclick = null;
+            overlay.onclick = null;
+        }
+
+        closeBtn.onclick = closeOverlay;
+        overlay.onclick = function (e) { if (e.target === overlay) closeOverlay(); };
     }
 
     function openProductDetail(product) {
