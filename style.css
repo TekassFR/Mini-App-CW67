@@ -1939,3 +1939,58 @@ body.detail-open .bottom-nav {
     white-space: nowrap;
     letter-spacing: 0.01em;
 }
+
+/* ===== VIDEO FULLSCREEN OVERLAY ===== */
+.vfs-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    background: #000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+body.vfs-open .bottom-nav,
+body.vfs-open .detail-overlay {
+    z-index: 1;
+}
+
+.vfs-player {
+    width: 100%;
+    height: 100%;
+    max-height: 100dvh;
+    object-fit: contain;
+    background: #000;
+    outline: none;
+}
+
+.vfs-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.vfs-close:hover,
+.vfs-close:active {
+    background: rgba(184, 134, 11, 0.85);
+    border-color: #d4a017;
+    transform: scale(1.1);
+}
