@@ -109,7 +109,7 @@
             const normalized = normalizeApiBase(base);
             if (!normalized) localStorage.removeItem("gh_write_api_base");
             else localStorage.setItem("gh_write_api_base", normalized);
-        } catch (_) {}
+        } catch (_) { }
     }
 
     function getWriteApiBases() {
@@ -289,6 +289,7 @@
         detailSelectedPrice: document.getElementById("detail-selected-price"),
         detailAddBtn: document.getElementById("detail-add-btn"),
         detailMuteBtn: document.getElementById("detail-mute-btn"),
+        detailFullscreenBtn: document.getElementById("detail-fullscreen-btn"),
         detailTeleBtn: document.getElementById("detail-tele-btn")
     };
 
@@ -831,7 +832,7 @@
         tabButtons.forEach((btn) => {
             btn.addEventListener("click", () => {
                 state.category = btn.getAttribute("data-category");
-                
+
                 // Update active class and aria-selected state on buttons
                 tabButtons.forEach((b) => {
                     b.classList.remove("active");
@@ -839,7 +840,7 @@
                 });
                 btn.classList.add("active");
                 btn.setAttribute("aria-selected", "true");
-                
+
                 renderProducts();
             });
         });
@@ -1307,22 +1308,31 @@
         els.detailThumbs.querySelectorAll(".detail-thumb").forEach((thumb) => {
             thumb.classList.toggle("active", parseInt(thumb.dataset.slideIndex, 10) === detailSlideIndex);
         });
-
-        els.detailSlideCount.textContent = `${detailSlideIndex + 1} / ${detailSlides.length}`;
+        if (els.detailSlideCount) els.detailSlideCount.textContent = `${detailSlideIndex + 1} / ${detailSlides.length}`;
         pauseAllSlideVideos();
 
         const activeType = detailSlides[detailSlideIndex].type;
-        if (activeType === "video") {
+        const isVideo = activeType === "video";
+        if (isVideo) {
             const activeVideo = els.detailMediaTrack.querySelector(`.slide-item[data-slide-index="${detailSlideIndex}"] video`);
-            if (activeVideo) activeVideo.play().catch(() => {});
+            if (activeVideo) activeVideo.play().catch(() => { });
             if (els.detailMuteBtn) {
                 els.detailMuteBtn.disabled = false;
                 els.detailMuteBtn.style.opacity = "1";
             }
-        } else if (els.detailMuteBtn) {
-            els.detailMuteBtn.disabled = true;
-            els.detailMuteBtn.style.opacity = "0.45";
-            els.detailMuteBtn.textContent = "🔈";
+            if (els.detailFullscreenBtn) {
+                els.detailFullscreenBtn.style.display = "flex";
+                els.detailFullscreenBtn.textContent = "⛶";
+            }
+        } else {
+            if (els.detailMuteBtn) {
+                els.detailMuteBtn.disabled = true;
+                els.detailMuteBtn.style.opacity = "0.45";
+                els.detailMuteBtn.textContent = "🔈";
+            }
+            if (els.detailFullscreenBtn) {
+                els.detailFullscreenBtn.style.display = "none";
+            }
         }
         if (els.detailMuteBtn) {
             els.detailMuteBtn.setAttribute("aria-label", t("muteLabel"));
@@ -1335,6 +1345,36 @@
         video.muted = !video.muted;
         els.detailMuteBtn.textContent = video.muted ? "🔈" : "🔇";
         els.detailMuteBtn.setAttribute("aria-label", video.muted ? t("muteLabel") : t("unmuteLabel"));
+    }
+
+    function enterVideoFullscreen() {
+        const video = els.detailMediaTrack.querySelector(`.slide-item[data-slide-index="${detailSlideIndex}"] video`);
+        if (!video) return;
+
+        const requestFS =
+            video.requestFullscreen ||
+            video.webkitRequestFullscreen ||
+            video.mozRequestFullScreen ||
+            video.msRequestFullscreen;
+
+        if (requestFS) {
+            requestFS.call(video).catch(() => { });
+        }
+
+        // Mettre à jour l'icône lors du changement d'état fullscreen
+        const onFSChange = () => {
+            const fsEl = document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement ||
+                document.msFullscreenElement;
+            if (els.detailFullscreenBtn) {
+                els.detailFullscreenBtn.textContent = fsEl ? "✕" : "⛶";
+            }
+        };
+        document.addEventListener("fullscreenchange", onFSChange, { once: true });
+        document.addEventListener("webkitfullscreenchange", onFSChange, { once: true });
+        document.addEventListener("mozfullscreenchange", onFSChange, { once: true });
+        document.addEventListener("MSFullscreenChange", onFSChange, { once: true });
     }
 
     function openProductDetail(product) {
@@ -1562,6 +1602,10 @@
             els.detailMuteBtn.addEventListener("click", toggleActiveVideoMute);
         }
 
+        if (els.detailFullscreenBtn) {
+            els.detailFullscreenBtn.addEventListener("click", enterVideoFullscreen);
+        }
+
         if (els.detailTeleBtn) {
             els.detailTeleBtn.addEventListener("click", () => {
                 const username = getPrimaryTelegramUsername();
@@ -1704,7 +1748,7 @@
                 renderReviews();
                 await loadAdminReviews();
             }
-        } catch (_) {}
+        } catch (_) { }
     }
 
     async function adminRejectReview(timestamp) {
@@ -1715,7 +1759,7 @@
                 body: JSON.stringify({ tg_username: getAdminUsername(), timestamp })
             });
             if (resp.ok) await loadAdminReviews();
-        } catch (_) {}
+        } catch (_) { }
     }
 
     async function loadAdminOrders() {
@@ -1766,7 +1810,7 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(order)
             });
-        } catch (_) {}
+        } catch (_) { }
     }
 
     // ===== ADMIN PRODUITS =====
@@ -1993,9 +2037,9 @@
                 <h3 class="admin-form-title">${isEdit ? "✏️ Modifier la catégorie" : "➕ Nouvelle catégorie"}</h3>
                 <form id="admin-cat-form" autocomplete="off">
                     ${isEdit
-                        ? `<input type="hidden" id="acf-key" value="${sanitize(key)}">`
-                        : `<label class="admin-label">Clé (slug) *<span class="admin-hint">Minuscules, pas d'espaces (ex: hash)</span><input class="admin-input" id="acf-key" type="text" maxlength="30" required></label>`
-                    }
+                ? `<input type="hidden" id="acf-key" value="${sanitize(key)}">`
+                : `<label class="admin-label">Clé (slug) *<span class="admin-hint">Minuscules, pas d'espaces (ex: hash)</span><input class="admin-input" id="acf-key" type="text" maxlength="30" required></label>`
+            }
                     <label class="admin-label">Nom *<input class="admin-input" id="acf-name" type="text" maxlength="50" value="${sanitize(cat ? cat.name : "")}" required></label>
                     <label class="admin-label">Emoji<input class="admin-input" id="acf-emoji" type="text" maxlength="8" value="${sanitize(cat ? (cat.emoji || "📦") : "📦")}"></label>
                     <label class="admin-label">Description<input class="admin-input" id="acf-desc" type="text" maxlength="200" value="${sanitize(cat ? (cat.description || "") : "")}"></label>
