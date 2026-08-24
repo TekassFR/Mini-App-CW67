@@ -1367,6 +1367,9 @@
         var player = document.getElementById("vfs-player");
         var closeBtn = document.getElementById("vfs-close");
 
+        // ⚠️ Mettre en pause la vidéo d'origine pour éviter le doublement du son
+        video.pause();
+
         player.src = video.src;
         player.currentTime = video.currentTime || 0;
         player.muted = false;
@@ -1375,12 +1378,15 @@
         player.play().catch(function () { });
 
         function closeOverlay() {
+            // Resynchroniser la vidéo principale et la reprendre
             try { video.currentTime = player.currentTime; } catch (e) { }
             player.pause();
             player.removeAttribute("src");
             player.load();
             overlay.style.display = "none";
             document.body.classList.remove("vfs-open");
+            // Reprendre la vidéo principale en arrière-plan
+            video.play().catch(function () { });
             closeBtn.onclick = null;
             overlay.onclick = null;
         }
