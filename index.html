@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css?v=20260514c">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
+
 <body>
     <div id="intro-screen" class="intro-screen" aria-hidden="true">
         <div class="intro-card">
@@ -54,13 +56,16 @@
 
                     <div class="card panel checkout-panel">
                         <div class="service-switch" id="service-switch">
-                            <button class="service-btn active" data-service="delivery" id="service-delivery-btn" type="button">Livraison</button>
-                            <button class="service-btn" data-service="pickup" id="service-pickup-btn" type="button">Sur place</button>
+                            <button class="service-btn active" data-service="delivery" id="service-delivery-btn"
+                                type="button">Livraison</button>
+                            <button class="service-btn" data-service="pickup" id="service-pickup-btn" type="button">Sur
+                                place</button>
                         </div>
 
                         <div class="field-group" id="delivery-field-group">
                             <label for="delivery-address" id="delivery-label">Adresse de livraison</label>
-                            <textarea id="delivery-address" rows="3" placeholder="Ex: 10 rue de Paris, 54000 Nancy"></textarea>
+                            <textarea id="delivery-address" rows="3"
+                                placeholder="Ex: 10 rue de Paris, 54000 Nancy"></textarea>
                         </div>
 
                         <div class="field-group" id="pickup-field-group" style="display: none;">
@@ -175,7 +180,8 @@
                     </article>
 
                     <article class="card panel profile-admin-card" id="profile-admin-card" style="display:none">
-                        <button class="btn primary admin-launch-btn" id="admin-panel-btn" type="button">⚙️ Gestion MiniApp</button>
+                        <button class="btn primary admin-launch-btn" id="admin-panel-btn" type="button">⚙️ Gestion
+                            MiniApp</button>
                     </article>
                 </div>
             </section>
@@ -211,7 +217,7 @@
             </section>
         </main>
 
-        <nav class="bottom-nav" id="bottom-nav">            <button class="tab-btn active" data-page="home" type="button">
+        <nav class="bottom-nav" id="bottom-nav"> <button class="tab-btn active" data-page="home" type="button">
                 <span class="tab-icon" aria-hidden="true">🏠</span>
                 <span class="tab-label">Accueil</span>
             </button>
@@ -256,16 +262,24 @@
                 <button class="admin-tab-btn" data-admin-tab="categories" type="button">Catégories</button>
             </div>
             <div class="admin-tab-pane active" id="admin-tab-reviews">
-                <div id="admin-reviews-pending"><div class="admin-empty">Chargement...</div></div>
+                <div id="admin-reviews-pending">
+                    <div class="admin-empty">Chargement...</div>
+                </div>
             </div>
             <div class="admin-tab-pane" id="admin-tab-orders">
-                <div id="admin-orders-all"><div class="admin-empty">Chargement...</div></div>
+                <div id="admin-orders-all">
+                    <div class="admin-empty">Chargement...</div>
+                </div>
             </div>
             <div class="admin-tab-pane" id="admin-tab-products">
-                <div id="admin-products-content"><div class="admin-empty">Chargement...</div></div>
+                <div id="admin-products-content">
+                    <div class="admin-empty">Chargement...</div>
+                </div>
             </div>
             <div class="admin-tab-pane" id="admin-tab-categories">
-                <div id="admin-categories-content"><div class="admin-empty">Chargement...</div></div>
+                <div id="admin-categories-content">
+                    <div class="admin-empty">Chargement...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -275,7 +289,8 @@
             <header class="detail-topbar">
                 <button class="top-pill" id="detail-close-btn" type="button">← Retour</button>
                 <div class="detail-logo-box">
-                    <img id="detail-brand-image" alt="Brand" src="https://picsum.photos/seed/brand-red/260/260" loading="lazy">
+                    <img id="detail-brand-image" alt="Brand" src="https://picsum.photos/seed/brand-red/260/260"
+                        loading="lazy">
                 </div>
             </header>
 
@@ -303,6 +318,8 @@
 
             <footer class="detail-bottom-bar">
                 <button class="sound-chip" id="detail-mute-btn" type="button" aria-label="Couper le son">🔈</button>
+                <button class="sound-chip detail-fullscreen-btn" id="detail-fullscreen-btn" type="button"
+                    aria-label="Plein écran" style="display:none;">⛶</button>
                 <button class="detail-add-main" id="detail-add-btn" type="button">Ajouter</button>
                 <button class="detail-send-btn" id="detail-tele-btn" type="button" aria-label="Contacter">✈</button>
             </footer>
@@ -313,4 +330,5 @@
 
     <script src="script.js?v=20260514e"></script>
 </body>
+
 </html>
