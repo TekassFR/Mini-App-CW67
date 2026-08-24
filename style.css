@@ -1994,3 +1994,26 @@ body.vfs-open .detail-overlay {
     border-color: #d4a017;
     transform: scale(1.1);
 }
+
+/* ===== MADE BY FOOTER ===== */
+.made-by-footer {
+    text-align: center;
+    padding: 10px 16px 18px;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    color: rgba(185, 170, 128, 0.4);
+    user-select: none;
+}
+
+.made-by-link {
+    color: rgba(212, 160, 23, 0.55);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.made-by-link:hover,
+.made-by-link:active {
+    color: #d4a017;
+    text-shadow: 0 0 8px rgba(212, 160, 23, 0.5);
+}
