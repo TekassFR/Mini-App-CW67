@@ -55,18 +55,38 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(160deg, #060501, #1a1502 55%, #261c02);
+    background:
+        radial-gradient(circle at 50% 50%, rgba(212, 160, 23, 0.25), transparent 65%),
+        linear-gradient(160deg, #060501, #1a1502 55%, #261c02);
     transition: opacity 0.45s ease, visibility 0.45s ease;
 }
 
 .intro-card {
     text-align: center;
     padding: 24px;
+    position: relative;
 }
 
 .intro-card h1 {
     font-size: clamp(2rem, 10vw, 3.8rem);
     letter-spacing: 0.08em;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(212, 160, 23, 0.6), 0 0 45px rgba(160, 120, 14, 0.4);
+    animation: titleGlowPulseGold 2s ease-in-out infinite;
+}
+
+@keyframes titleGlowPulseGold {
+
+    0%,
+    100% {
+        transform: scale(1);
+        text-shadow: 0 0 20px rgba(212, 160, 23, 0.5), 0 0 40px rgba(160, 120, 14, 0.3);
+    }
+
+    50% {
+        transform: scale(1.03);
+        text-shadow: 0 0 35px rgba(250, 204, 21, 0.95), 0 0 65px rgba(212, 160, 23, 0.7);
+    }
 }
 
 .intro-kicker {
@@ -81,6 +101,28 @@ body {
     margin-top: 10px;
 }
 
+.intro-spinner {
+    width: 42px;
+    height: 42px;
+    margin: 20px auto 0;
+    border: 3px solid rgba(212, 160, 23, 0.18);
+    border-top-color: #f59e0b;
+    border-right-color: #fbbf24;
+    border-radius: 50%;
+    animation: introSpin 0.75s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    box-shadow: 0 0 16px rgba(212, 160, 23, 0.38);
+}
+
+@keyframes introSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 body.app-ready .intro-screen {
     opacity: 0;
     visibility: hidden;
@@ -91,6 +133,58 @@ body.app-ready .intro-screen {
     max-width: 1080px;
     margin: 0 auto;
     padding: 14px;
+}
+
+/* --- BANDEAU DÉFILANT COMPACT EN HAUT (DORÉ/AMBRE CW67) --- */
+.top-ticker-banner {
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(160, 112, 14, 0.88) 0%, rgba(212, 160, 23, 0.82) 50%, rgba(110, 75, 8, 0.92) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 14px;
+    padding: 10px 0;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(212, 160, 23, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    white-space: nowrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(240, 200, 100, 0.35);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.top-ticker-banner .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: tickerInfinite 20s linear infinite;
+    will-change: transform;
+}
+
+.top-ticker-banner:hover .ticker-track {
+    animation-play-state: paused;
+}
+
+.top-ticker-banner .ticker-text {
+    display: inline-block;
+    padding-right: 50px;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes tickerInfinite {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
 .app-header {
