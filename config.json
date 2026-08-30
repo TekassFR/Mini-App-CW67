@@ -133,6 +133,53 @@
           "5": 210.00,
           "10": 400.00
         }
+        },
+        {
+        "id": 8,
+        "name": "Hash Angels Forbiden Fruit",
+        "description": "Static Single Source strains forbiden fruit les petits poumons ne soyez pas choqué 💪.",
+        "price": 10,
+        "emoji": "🍫",
+        "image": "https://i.ibb.co/Qgb8J9y/5812225791545250066.jpg",
+        "category": "pizza",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/144GWx8.mp4",
+        "customPrices": {
+          "5": 180.00,
+          "10": 360.00
+        }
+      },
+    {
+    "id": 9,
+    "name": "Riff Terps Plasma Static",
+    "description": "Riff Terps Plasma Static strains Strawberry MILKSHAKE les fumeurs de Static c'est pour vous.",
+    "price": 10,
+    "emoji": "🍫",
+    "image": "https://i.ibb.co/k2MkGdhQ/5811959177155383099.jpg",
+    "category": "pizza",
+    "isNew": true,
+    "isPromo": false,
+    "video": "https://i.imgur.com/eGTGH2W.mp4",
+    "customPrices": {
+      "5": 70.00,
+      "10": 130.00
+    }
+},
+    {
+        "id": 10,
+        "name": "RedBull Farms Electro Static",
+        "description": "RedBull Farms Electro Static strains rainbow dips, mango runtz, gelato zkittelz.",
+        "price": 10,
+        "emoji": "🍫",
+        "image": "https://i.ibb.co/YFm6RjP4/5812225791545250355.jpg",
+        "category": "pizza",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/LqiPykG.mp4",
+        "customPrices": {
+          "5": 80.00
+        }
       }
     ]
   }
